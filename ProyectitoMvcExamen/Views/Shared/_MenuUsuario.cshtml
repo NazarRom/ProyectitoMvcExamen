@@ -1,0 +1,13 @@
+﻿@{
+    string usuario = Context.Session.GetString("Usuario");
+}
+
+@if (usuario == null)
+{
+    <a asp-controller="Home" asp-action="LogIn" class="nav-link text-dark">Log In</a>
+}
+else
+{
+ @await Component.InvokeAsync("MenuDepartamentos")
+
+}

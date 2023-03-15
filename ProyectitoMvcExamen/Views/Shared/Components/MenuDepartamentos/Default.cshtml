@@ -1,0 +1,28 @@
+﻿@model List<Departamento>
+
+@{
+    string usuario = Context.Session.GetString("Usuario");
+}
+<li>
+    @usuario
+</li>
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        Dropdown button
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+
+        @foreach (Departamento dept in Model)
+        {
+            <li>
+                <a asp-controller="Empleados" asp-action="EmpoleadosDepartamento" asp-route-deptno="@dept.Dept_no" class="dropdown-item">@dept.Dnombre</a>
+            </li>
+        }
+        <li>
+            <a asp-controller="Home" asp-action="LogOut" class="dropdown-item">
+                Cerrar sesión
+            </a>
+        </li>
+    </ul>
+</div>

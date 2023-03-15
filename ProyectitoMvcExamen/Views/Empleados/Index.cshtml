@@ -1,0 +1,32 @@
+﻿<h1>Vista Parcial Ajax</h1>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+
+            $("#botonCargarEmpleados").click(function(){
+                $("#CajaEmpleados").load("/Empleados/_EmpleadosPartial");
+            })
+
+
+            $("#buscarEmpPorOficio").click(function(){
+                var oficioEmp = $("#cajaoficio").val();
+
+                var request = "/Empleados/_OficioDetail?oficio=" + oficioEmp;
+
+                $("#CajaEmpPorOficio").load(request);
+            })
+        })
+
+       
+    </script>
+}
+
+<button id="botonCargarEmpleados" class="btn btn-info">Cargar Empleados</button>
+<div id="CajaEmpleados"></div>
+
+
+<label>Buscar Empleaados por oficio</label>
+<input type="text" id="cajaoficio" class="form-control" />
+<button id="buscarEmpPorOficio" class="btn btn-dark">Buscar por oficio</button>
+<div id="CajaEmpPorOficio"></div>

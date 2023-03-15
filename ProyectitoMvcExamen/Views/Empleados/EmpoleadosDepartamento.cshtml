@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ProyectitoMvcExamen.Models.Empleado>
+
+@{
+    int numeroregistros = 0;
+    int numeropagina = 1;
+    int Registro = 0;
+    int Deptno = 0;
+    //vamos a recibir siempre el numero de registros?
+    if (ViewData["Registros"] != null)
+    {
+        Registro = (int)ViewData["Registro"];
+        numeroregistros = (int)ViewData["REGISTROS"];
+        Deptno = (int)ViewData["Deptno"];
+    }
+}
+<form method="post">
+        <label>Numero de registros</label>
+        <input type="text" name="registro" class="form-control" required />
+        <button class="btn btn-warning">Enviar</button>
+    </form>
+
+
+@if (Model != null)
+{
+    //dibujamos la paginacion
+    <ul class="list-group list-group-horizontal">
+        @for (int i = 1; i <= numeroregistros; i += Registro)
+    {
+        <li class="list-group-item list-group-item-danger">
+                <a asp-controller="Empleados" asp-action="EmpoleadosDepartamento" class="btn btn-info" asp-route-posicion="@i" asp-route-deptno="@Deptno" asp-route-registro="@Registro">@numeropagina</a>
+        </li>
+        numeropagina += 1;
+    }
+    </ul>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Emp_no)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apellido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Oficio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dept_no)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Emp_no)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Oficio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Salario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dept_no)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+}
