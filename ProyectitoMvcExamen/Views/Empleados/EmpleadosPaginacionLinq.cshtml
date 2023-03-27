@@ -1,0 +1,40 @@
+﻿@model Empleado
+ 
+@{
+    Departamento dept = ViewData["PELICULA"] as Departamento;
+}
+ 
+@{
+    ViewData["Title"] = "EscenasPelicula";
+}
+ 
+<h1>Detalles Pelicula</h1>
+ 
+<div class="card" style="width: 28rem; float:left">
+  
+    <div class="card-body">
+        <h5 class="card-title">@dept.Dnombre</h5>
+        <p class="card-text">Título original: @dept.Localidad</p>
+        <p class="card-text">@dept.Dept_no</p>
+        <a asp-controller="Empleados" asp-action="Index"
+           class="btn btn-primary">Volver</a>
+    </div>
+</div>
+ 
+<div class="card" style="width: 28rem; float:left">
+    <h4 style="color:blue">@ViewData["DATOS"]</h4>
+    <a asp-controller="Empleados" asp-action="EmpleadosPaginacionLinq"
+       asp-route-posicion="@ViewData["ANTERIOR"]"
+       asp-route-deptno="@Model.Dept_no"
+       class="btn btn-danger">Anterior</a>
+    <a asp-controller="Empleados" asp-action="EmpleadosPaginacionLinq"
+       asp-route-deptno="@Model.Dept_no"
+       asp-route-posicion="@ViewData["SIGUIENTE"]"
+       class="btn btn-default">Siguiente</a>
+    <div class="card-body">
+        <h5 class="card-title">@Model.Apellido</h5>
+        <p class="card-text">@Model.Oficio</p>
+ 
+    </div>
+</div>
+

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProyectitoMvcExamen.Filters;
 using ProyectitoMvcExamen.Models;
 using ProyectitoMvcExamen.Repositories;
 
@@ -28,9 +29,10 @@ namespace ProyectitoMvcExamen.Controllers
             List<Empleado> empleados = this.repo.GetEmpleadosPorOficio(oficio);
             return PartialView("_OficioDetail", empleados);
         }
-
+        [AuthorizeUsuarios]
         public async Task<IActionResult> EmpoleadosDepartamento(int deptno , int? posicion, int? registro)
         {
+           
             if (posicion == null)
             {
                 posicion = 1;
@@ -46,7 +48,8 @@ namespace ProyectitoMvcExamen.Controllers
                 ViewData["Registro"] = registro;
                 return View(empleados);
             }
-            
+           
+
         }
         [HttpPost]
         public async Task<IActionResult> EmpoleadosDepartamento(int deptno, int? registro)
@@ -59,6 +62,35 @@ namespace ProyectitoMvcExamen.Controllers
                 ViewData["Registro"] = registro;
                 return View(empleados);
             
+        }
+
+        public IActionResult EmpleadosPaginacionLinq(int deptno , int? posicion)
+        {
+            //LINQ FUNCIONA EN BASE 0
+            //SQL SERVER FUNCIONA EN BASE 1
+            if (posicion == null)
+            {
+                posicion = 0;
+            }
+            int numeroEscenas = 0;
+            Empleado emp = this.repo.GetEmpPaginacion(deptno, posicion.Value, ref numeroEscenas);
+            ViewData["DATOS"] = "Escena " + (posicion + 1)
+                + " de " + numeroEscenas;
+            int siguiente = posicion.Value + 1;
+            if (siguiente >= numeroEscenas)
+            {
+                siguiente = 0;
+            }
+            int anterior = posicion.Value - 1;
+            if (anterior < 0)
+            {
+                anterior = numeroEscenas - 1;
+            }
+            ViewData["SIGUIENTE"] = siguiente;
+            ViewData["ANTERIOR"] = anterior;
+            Departamento dept = this.repo.GetDepartamentoById(deptno);
+            ViewData["PELICULA"] = dept;
+            return View(emp);
         }
 
     }

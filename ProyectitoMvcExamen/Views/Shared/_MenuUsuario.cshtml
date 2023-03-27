@@ -1,10 +1,7 @@
-﻿@{
-    string usuario = Context.Session.GetString("Usuario");
-}
-
-@if (usuario == null)
+﻿
+@if (Context.User.Identity.IsAuthenticated == false)
 {
-    <a asp-controller="Home" asp-action="LogIn" class="nav-link text-dark">Log In</a>
+    <a asp-controller="Empleados" asp-action="EmpoleadosDepartamento" class="nav-link text-dark">Log In</a>
 }
 else
 {

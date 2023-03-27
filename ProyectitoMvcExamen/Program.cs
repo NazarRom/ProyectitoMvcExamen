@@ -1,16 +1,23 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using ProyectitoMvcExamen.Data;
 using ProyectitoMvcExamen.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
-
+//seguridad
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+}).AddCookie();
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("SqlHospital");
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => options.EnableEndpointRouting = false).AddSessionStateTempDataProvider();
 builder.Services.AddTransient<RepositoryDepartamento>();
 builder.Services.AddDbContext<DepartamentoContext>(option => option.UseSqlServer(connectionString));
 
@@ -29,10 +36,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.UseMvc(routes =>
+{
+    routes.MapRoute(
+        name: "default",
+    template: "{controller=Home}/{action=Index}/{id?}");
+ 
+});
 app.Run();

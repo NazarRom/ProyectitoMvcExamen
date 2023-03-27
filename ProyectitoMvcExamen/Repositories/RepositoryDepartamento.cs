@@ -53,7 +53,9 @@ namespace ProyectitoMvcExamen.Repositories
             return consulta.ToList();
         }
 
-        public async Task<ModelPaginarEmpleados> GetPaginarEmpleadosDepartamentoAsync(int posicion, int deptno, int registro )
+      
+
+        public async Task<ModelPaginarEmpleados> GetPaginarEmpleadosDepartamentoAsync(int posicion, int deptno, int registro)
         {
             string sql = "sp_grupo_empleados_departameto @dept, @posicion, @registro, @numeroregistros out";
             SqlParameter pamnumregistros = new SqlParameter("@numeroregistros", -1);
@@ -71,5 +73,30 @@ namespace ProyectitoMvcExamen.Repositories
                 Empleados = empleados
             };
         }
+
+        public async Task<Empleado> ExisteEmpleado(string apellido, int empno)
+        {
+            var consulta = this.context.Empleados.Where(x => x.Apellido == apellido && x.Emp_no == empno);
+            return consulta.FirstOrDefault();
+        }
+
+        public Empleado GetEmpPaginacion(int dept,int posicion, ref int numeroEscenas)
+        {
+            //VOY A RECUPERAR LA COLECCION DE ESCENAS DE UNA PELICULA
+            //PARA ELLO, UTILIZAMOS EL METODO ANTERIOR
+            List<Empleado> empList = this.GetEmpleadosDepartamento(dept);
+            numeroEscenas = empList.Count;
+            //VAMOS A PAGINAR DE UNO EN UNO
+            Empleado empleado =
+                empList.Skip(posicion).Take(1).FirstOrDefault();
+            return empleado;
+        }
+
+        public Departamento GetDepartamentoById(int deptno)
+        {
+            return this.context.Departamentos.FirstOrDefault(x => x.Dept_no == deptno);
+        }
+
+
     }
 }

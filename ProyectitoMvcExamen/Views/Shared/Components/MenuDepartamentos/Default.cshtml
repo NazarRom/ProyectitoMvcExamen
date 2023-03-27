@@ -1,11 +1,17 @@
-﻿@model List<Departamento>
+﻿@using System.Security.Claims;
+@model List<Departamento>
 
-@{
-    string usuario = Context.Session.GetString("Usuario");
-}
 <li>
-    @usuario
+    @Context.User.Identity.Name
 </li>
+<li>
+    @Context.User.FindFirstValue(ClaimTypes.Role)
+</li>
+<li>
+    @Context.User.FindFirstValue("Salario")
+</li>
+
+
 
 <div class="dropdown">
     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -18,9 +24,14 @@
             <li>
                 <a asp-controller="Empleados" asp-action="EmpoleadosDepartamento" asp-route-deptno="@dept.Dept_no" class="dropdown-item">@dept.Dnombre</a>
             </li>
+            <li>
+
+                <a asp-controller="Empleados" asp-action="EmpleadosPaginacionLinq" asp-route-deptno="@dept.Dept_no" class="dropdown-item">@dept.Dnombre + pagLinq</a>
+
+            </li>
         }
         <li>
-            <a asp-controller="Home" asp-action="LogOut" class="dropdown-item">
+            <a asp-controller="Managed" asp-action="LogOut" class="dropdown-item">
                 Cerrar sesión
             </a>
         </li>
