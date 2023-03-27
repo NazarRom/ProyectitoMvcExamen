@@ -13,6 +13,7 @@ builder.Services.AddAuthentication(options =>
 }).AddCookie();
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("SqlHospital");
+builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
