@@ -10,9 +10,19 @@ builder.Services.AddAuthentication(options =>
     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-}).AddCookie();
+}).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+    config =>
+    {
+        config.AccessDeniedPath = "/Managed/ErrorAcceso";
+    });
+
+//autorizazion
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("PermisosElevados", policy => policy.RequireRole("DIRECTOR", "PRESIDENTE"));
+});
 // Add services to the container.
-string connectionString = builder.Configuration.GetConnectionString("SqlHospital");
+string connectionString = builder.Configuration.GetConnectionString("SqlCasa");
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {

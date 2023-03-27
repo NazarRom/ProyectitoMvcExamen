@@ -29,7 +29,7 @@ namespace ProyectitoMvcExamen.Controllers
             List<Empleado> empleados = this.repo.GetEmpleadosPorOficio(oficio);
             return PartialView("_OficioDetail", empleados);
         }
-        [AuthorizeUsuarios]
+        [AuthorizeUsuarios(Policy = "PermisosElevados")]
         public async Task<IActionResult> EmpoleadosDepartamento(int deptno , int? posicion, int? registro)
         {
            
@@ -63,7 +63,7 @@ namespace ProyectitoMvcExamen.Controllers
                 return View(empleados);
             
         }
-
+        [AuthorizeUsuarios(Policy = "PermisosElevados")]
         public IActionResult EmpleadosPaginacionLinq(int deptno , int? posicion)
         {
             //LINQ FUNCIONA EN BASE 0

@@ -16,6 +16,11 @@ namespace ProyectitoMvcExamen.Controllers
             this.repo = repo;
         }
 
+        public IActionResult ErrorAcceso()
+        {
+            return View();
+        }
+
         public IActionResult LogIn()
         {
             return View();
